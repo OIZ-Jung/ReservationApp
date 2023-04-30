@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:today_my_school_2/models/m_auth.dart';
 import 'package:today_my_school_2/models/m_signup.dart';
 import 'package:today_my_school_2/style.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignupPage extends StatefulWidget {
   static final _formKey = GlobalKey<FormState>();
@@ -407,26 +408,40 @@ class SignupButton extends StatelessWidget {
         // 파이어베이스에 보내는 요청이므로 시간이 걸릴 수 있어 async-await로 구현
         onPressed: () async {
           if (SignupPage._formKey.currentState!.validate()) {
-            await authClient
-                .signupWithEmail(signupField.email, signupField.password)
-                .then(
-              (signupStatus) {
-                if (signupStatus == AuthStatus.signupSuccess) {
-                  ScaffoldMessenger.of(context)
-                    ..hideCurrentSnackBar()
-                    ..showSnackBar(
-                      const SnackBar(content: Text('회원가입 완료!')),
-                    );
-                  Navigator.pop(context);
-                } else {
-                  ScaffoldMessenger.of(context)
-                    ..hideCurrentSnackBar()
-                    ..showSnackBar(
-                      const SnackBar(content: Text('회원가입 실패!')),
-                    );
-                }
-              },
-            );
+            try {
+              UserCredential credential = await FirebaseAuth.instance
+                  .createUserWithEmailAndPassword(
+                      email: signupField.email, password: signupField.password);
+              if (credential.user != null) {
+                await FirebaseFirestore.instance
+                    .collection("users")
+                    .doc(credential.user!.uid)
+                    .set({
+                  "email": signupField.email,
+                  "password": signupField.password,
+                  "uid": credential.user!.uid,
+                  "name": signupField.name,
+                  "phone": signupField.phone
+                });
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(const SnackBar(content: Text('회원가입 완료!')));
+                Navigator.pop(context);
+              }
+            } catch (e) {
+              print(e);
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  const SnackBar(content: Text("회원가입 실패!")),
+                );
+            }
+          } else {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                const SnackBar(content: Text("회원가입 실패!")),
+              );
           }
         },
         child: const Text(
