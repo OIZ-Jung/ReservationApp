@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,7 +23,18 @@ class FirebaseAuthProvider with ChangeNotifier {
     try {
       UserCredential credential = await authClient
           .createUserWithEmailAndPassword(email: email, password: password);
-      return AuthStatus.signupSuccess;
+      if (credential.user != null) {
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(credential.user!.uid)
+            .set({
+          "email": email,
+          "password": password,
+          "uid": credential.user!.uid
+        });
+        return AuthStatus.signupSuccess;
+      } else
+        return AuthStatus.signupFail;
     } catch (e) {
       print(e);
       return AuthStatus.signupFail;
