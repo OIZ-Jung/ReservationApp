@@ -197,3 +197,55 @@ class NavigationButton extends StatelessWidget {
     );
   }
 }
+
+class LaunchUrlButton extends StatelessWidget {
+  final String image;
+  final String text;
+  final Uri uri;
+
+  const LaunchUrlButton({
+    super.key,
+    required this.image,
+    required this.text,
+    required this.uri,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.4,
+      height: MediaQuery.of(context).size.height * 0.25,
+      child: ElevatedButton(
+        onPressed: () {
+          launchUrl(uri);
+        },
+        style: ElevatedButton.styleFrom(
+          foregroundColor: ColorStyles.black,
+          backgroundColor: ColorStyles.white,
+          elevation: 10,
+          textStyle: TextStyles.headline6,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(image),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                text,
+                style: const TextStyle(),
+                textAlign: TextAlign.center,
+                softWrap: true,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
