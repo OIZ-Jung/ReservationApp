@@ -72,15 +72,15 @@ class _HomePageState extends State<HomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        NavigationButton(
+                        LaunchUrlButton(
                           image: 'assets/images/football_field.png',
-                          text: '인조잔디구장\n예약 바로가기',
-                          function: launchUrl(_urlField),
+                          text: '축구장 예약',
+                          uri: _urlField,
                         ),
-                        NavigationButton(
+                        LaunchUrlButton(
                           image: 'assets/images/library.png',
-                          text: '도서관 시설\n예약 바로가기',
-                          function: launchUrl(_urlLibrary),
+                          text: '도서관 시설',
+                          uri: _urlLibrary,
                         ),
                       ],
                     ),
@@ -181,9 +181,7 @@ class NavigationButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(image),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(),
               Text(
                 text,
                 style: const TextStyle(),
@@ -233,9 +231,7 @@ class LaunchUrlButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(image),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(),
               Text(
                 text,
                 style: const TextStyle(),
