@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:today_my_school_2/style.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -95,8 +98,43 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class UserInfoDisplay extends StatelessWidget {
+class UserInfoDisplay extends StatefulWidget {
   const UserInfoDisplay({super.key});
+
+  @override
+  State<UserInfoDisplay> createState() => _UserInfoDisplayState();
+}
+
+class _UserInfoDisplayState extends State<UserInfoDisplay> {
+  String? name = "";
+  String? email = "";
+  String? phone = "";
+
+  Future _getDataFromDatabase() async {
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then(
+      (snapshot) async {
+        if (snapshot.exists) {
+          setState(() {
+            name = snapshot.data()!["name"];
+            email = snapshot.data()!["email"];
+            phone = snapshot.data()!["phone"];
+            snapshot.data()!["uid"];
+          });
+        }
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getDataFromDatabase();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,9 +151,9 @@ class UserInfoDisplay extends StatelessWidget {
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             Text(
-              '김제니',
+              name!,
               style: TextStyle(
                 color: ColorStyles.white,
                 fontSize: 24,
@@ -123,7 +161,7 @@ class UserInfoDisplay extends StatelessWidget {
               ),
             ),
             Text(
-              'test@kmou.ac.kr',
+              email!,
               style: TextStyle(
                 color: ColorStyles.white,
                 fontSize: 16,
@@ -131,7 +169,7 @@ class UserInfoDisplay extends StatelessWidget {
               ),
             ),
             Text(
-              '010-1234-5678',
+              phone!,
               style: TextStyle(
                 color: ColorStyles.white,
                 fontSize: 16,
