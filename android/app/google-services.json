@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "565957332966",
+    "project_id": "tomyschool-34c3e",
+    "storage_bucket": "tomyschool-34c3e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:565957332966:android:90b6d8b3f455696c2e9027",
+        "android_client_info": {
+          "package_name": "com.example.today_my_school_2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "565957332966-4mo574um7p425or53tp99136f16vq8a3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4-TkNP7r84IAXso1_3fNEQ9302BHqmrU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "565957332966-4mo574um7p425or53tp99136f16vq8a3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
