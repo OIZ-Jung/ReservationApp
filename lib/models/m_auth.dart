@@ -34,8 +34,9 @@ class FirebaseAuthProvider with ChangeNotifier {
           "uid": credential.user!.uid
         });
         return AuthStatus.signupSuccess;
-      } else
+      } else {
         return AuthStatus.signupFail;
+      }
     } catch (e) {
       print(e);
       return AuthStatus.signupFail;
